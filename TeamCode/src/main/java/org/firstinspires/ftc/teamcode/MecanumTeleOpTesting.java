@@ -5,7 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-
+import com.qualcomm.hardware.limelightvision.Limelight3A;
+import com.qualcomm.hardware.limelightvision.LLResult;
 
 @TeleOp (name= "MecanumTeleOpTesting")
 //@Disabled
@@ -17,6 +18,7 @@ public class MecanumTeleOpTesting extends OpMode {
     DcMotor br_Wheel;
     DcMotor torque_slide;
     DcMotor speed_slide;
+    private Limelight3A limelight;
 
     @Override
     public void init() {
@@ -26,6 +28,7 @@ public class MecanumTeleOpTesting extends OpMode {
         br_Wheel = hardwareMap.get(DcMotor.class, "br_motor");
         torque_slide = hardwareMap.get(DcMotor.class, "torque_motor");
         speed_slide = hardwareMap.get(DcMotor.class, "speed_motor");
+        limelight = hardwareMap.get(Limelight3A.class, "Limelight 3A");
 
         fr_Wheel.setDirection(DcMotor.Direction.REVERSE);
         fl_Wheel.setDirection(DcMotor.Direction.FORWARD);
@@ -38,6 +41,10 @@ public class MecanumTeleOpTesting extends OpMode {
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         torque_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         speed_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        telemetry.setMsTransmissionInterval(11);
+        limelight.pipelineSwitch(0);
+        limelight.start();
     }
 
     public void loop() {
@@ -53,6 +60,15 @@ public class MecanumTeleOpTesting extends OpMode {
         telemetry.addData("Front Right Wheel Pos", fr_Position);
         telemetry.addData("Back Right Wheel Pos", br_Position);
         telemetry.update();
+
+        LLResult result = limelight.getLatestResult();
+        if (result != null) {
+            if (result.isValid()) {
+                telemetry.addData("tx", result.getTx());
+                telemetry.addData("ty", result.getTy());
+                telemetry.addData("tag_number", limelight.getLatestResult());
+            }
+        }
 
         // wheel movement
         double left_x = gamepad1.left_stick_x;
