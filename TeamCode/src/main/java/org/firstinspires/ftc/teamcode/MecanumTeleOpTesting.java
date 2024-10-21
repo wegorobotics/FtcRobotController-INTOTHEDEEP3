@@ -23,6 +23,9 @@ public class MecanumTeleOpTesting extends OpMode {
     //private Limelight3A limelight;
     Servo arm_servo;
 
+    DcMotor pumpkin_smasher;
+    Servo candy_grabber;
+
     @Override
     public void init() {
         fl_Wheel = hardwareMap.get(DcMotor.class, "fl_motor");
@@ -33,6 +36,10 @@ public class MecanumTeleOpTesting extends OpMode {
         speed_slide = hardwareMap.get(DcMotor.class, "speed_motor");
         //limelight = hardwareMap.get(Limelight3A.class, "Limelight 3A");
         arm_servo = hardwareMap.get(Servo.class, "arm");
+
+        pumpkin_smasher = hardwareMap.get(DcMotor.class, "pumpkin_motor");
+        candy_grabber = hardwareMap.get(Servo.class, "candy");
+
 
         fr_Wheel.setDirection(DcMotor.Direction.FORWARD);
         fl_Wheel.setDirection(DcMotor.Direction.REVERSE);
@@ -45,6 +52,8 @@ public class MecanumTeleOpTesting extends OpMode {
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         torque_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         speed_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+        pumpkin_smasher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.setMsTransmissionInterval(11);
         //limelight.pipelineSwitch(0);
@@ -106,9 +115,18 @@ public class MecanumTeleOpTesting extends OpMode {
         br_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        // slide movement
-        torque_slide.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
-        speed_slide.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+        // spoopy stuff
+        final double candy_racing = .01;
+        double candy_bucket = candy_grabber.getPosition();
+        telemetry.addData("Candy Bucket Pos", candy_bucket);
+
+        pumpkin_smasher.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+        if (gamepad1.x && candy_bucket < 1) {
+            candy_bucket += candy_racing;
+        } else if (gamepad1.y && candy_bucket > 0) {
+            candy_bucket -= candy_racing;
+        }
+        candy_grabber.setPosition(candy_bucket);
     }
 }
 
