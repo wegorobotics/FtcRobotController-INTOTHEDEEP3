@@ -1,19 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.hardware.motors.RevRoboticsCoreHexMotor;
-import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.hardware.limelightvision.Limelight3A;
-import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.hardware.CRServo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous (name= "ParkingAuto")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous (name= "ParkingAutoLeft")
 
-public class ParkingAuto extends LinearOpMode {
+public class ParkingAutoLeft extends LinearOpMode {
     // motors
     DcMotor fl_Wheel;
     DcMotor bl_Wheel;
@@ -52,12 +45,9 @@ public class ParkingAuto extends LinearOpMode {
 
         waitForStart();
 
-        move(1, 90, 0, 4000);
-
-
-
-
-
+        move(1, 90, 0, 3100);
+        move(0,0,1,1200);
+        move(1,90,0,600);
     }
 
     public void move(double magnitude, double direction, double turn, long time) {
