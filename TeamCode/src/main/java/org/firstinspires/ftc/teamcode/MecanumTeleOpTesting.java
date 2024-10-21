@@ -18,13 +18,13 @@ public class MecanumTeleOpTesting extends OpMode {
     DcMotor bl_Wheel;
     DcMotor fr_Wheel;
     DcMotor br_Wheel;
-    DcMotor torque_slide;
-    DcMotor speed_slide;
     //private Limelight3A limelight;
     Servo arm_servo;
 
+    /*
     DcMotor pumpkin_smasher;
     Servo candy_grabber;
+    */
 
     @Override
     public void init() {
@@ -32,13 +32,11 @@ public class MecanumTeleOpTesting extends OpMode {
         bl_Wheel = hardwareMap.get(DcMotor.class, "bl_motor");
         fr_Wheel = hardwareMap.get(DcMotor.class, "fr_motor");
         br_Wheel = hardwareMap.get(DcMotor.class, "br_motor");
-        torque_slide = hardwareMap.get(DcMotor.class, "torque_motor");
-        speed_slide = hardwareMap.get(DcMotor.class, "speed_motor");
         //limelight = hardwareMap.get(Limelight3A.class, "Limelight 3A");
         arm_servo = hardwareMap.get(Servo.class, "arm");
 
-        pumpkin_smasher = hardwareMap.get(DcMotor.class, "pumpkin_motor");
-        candy_grabber = hardwareMap.get(Servo.class, "candy");
+        //pumpkin_smasher = hardwareMap.get(DcMotor.class, "pumpkin_motor");
+        //candy_grabber = hardwareMap.get(Servo.class, "candy");
 
 
         fr_Wheel.setDirection(DcMotor.Direction.FORWARD);
@@ -50,10 +48,8 @@ public class MecanumTeleOpTesting extends OpMode {
         fl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        torque_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        speed_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
-        pumpkin_smasher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //pumpkin_smasher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.setMsTransmissionInterval(11);
         //limelight.pipelineSwitch(0);
@@ -115,18 +111,20 @@ public class MecanumTeleOpTesting extends OpMode {
         br_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        /*
         // spoopy stuff
         final double candy_racing = .01;
         double candy_bucket = candy_grabber.getPosition();
         telemetry.addData("Candy Bucket Pos", candy_bucket);
 
         pumpkin_smasher.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
-        if (gamepad1.x && candy_bucket < 1) {
+        if (gamepad1.x) {
             candy_bucket += candy_racing;
-        } else if (gamepad1.y && candy_bucket > 0) {
+        } else if (gamepad1.y) {
             candy_bucket -= candy_racing;
         }
         candy_grabber.setPosition(candy_bucket);
+        */
     }
 }
 

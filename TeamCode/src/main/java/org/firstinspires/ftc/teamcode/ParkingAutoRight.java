@@ -12,8 +12,8 @@ public class ParkingAutoRight extends LinearOpMode {
     DcMotor bl_Wheel;
     DcMotor fr_Wheel;
     DcMotor br_Wheel;
-    DcMotor torque_slide;
-    DcMotor speed_slide;
+    DcMotor placing_slide;
+    DcMotor climbing_slide;
     //private Limelight3A limelight;
     Servo arm_servo;
 
@@ -23,8 +23,8 @@ public class ParkingAutoRight extends LinearOpMode {
         bl_Wheel = hardwareMap.get(DcMotor.class, "bl_motor");
         fr_Wheel = hardwareMap.get(DcMotor.class, "fr_motor");
         br_Wheel = hardwareMap.get(DcMotor.class, "br_motor");
-        torque_slide = hardwareMap.get(DcMotor.class, "torque_motor");
-        speed_slide = hardwareMap.get(DcMotor.class, "speed_motor");
+        placing_slide = hardwareMap.get(DcMotor.class, "placing_motor");
+        climbing_slide = hardwareMap.get(DcMotor.class, "climbing_motor");
         //limelight = hardwareMap.get(Limelight3A.class, "Limelight 3A");
 
         fr_Wheel.setDirection(DcMotor.Direction.FORWARD);
@@ -36,8 +36,8 @@ public class ParkingAutoRight extends LinearOpMode {
         fl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        torque_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-        speed_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        placing_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        climbing_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.setMsTransmissionInterval(11);
         //limelight.pipelineSwitch(0);
