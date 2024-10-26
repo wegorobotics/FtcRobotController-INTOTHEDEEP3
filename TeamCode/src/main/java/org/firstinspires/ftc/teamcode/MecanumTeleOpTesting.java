@@ -21,10 +21,10 @@ public class MecanumTeleOpTesting extends OpMode {
     //private Limelight3A limelight;
     Servo arm_servo;
 
-    /*
-    DcMotor pumpkin_smasher;
-    Servo candy_grabber;
-    */
+
+    //DcMotor pumpkin_smasher;
+    //Servo candy_grabber;
+
 
     @Override
     public void init() {
@@ -38,6 +38,10 @@ public class MecanumTeleOpTesting extends OpMode {
         //pumpkin_smasher = hardwareMap.get(DcMotor.class, "pumpkin_motor");
         //candy_grabber = hardwareMap.get(Servo.class, "candy");
 
+        //pumpkin_smasher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
+
+
 
         fr_Wheel.setDirection(DcMotor.Direction.FORWARD);
         fl_Wheel.setDirection(DcMotor.Direction.REVERSE);
@@ -48,8 +52,6 @@ public class MecanumTeleOpTesting extends OpMode {
         fl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         br_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-
-        //pumpkin_smasher.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         telemetry.setMsTransmissionInterval(11);
         //limelight.pipelineSwitch(0);
@@ -84,6 +86,9 @@ public class MecanumTeleOpTesting extends OpMode {
         //pipeline 1 = basket side
         //pipeline 2 = observation side
 
+        //double candy_bucket = candy_grabber.getPosition();
+        //telemetry.addData("Candy Bucket Pos", candy_bucket);
+
         telemetry.update();
 
         // wheel movement
@@ -111,20 +116,23 @@ public class MecanumTeleOpTesting extends OpMode {
         br_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+
         /*
         // spoopy stuff
         final double candy_racing = .01;
-        double candy_bucket = candy_grabber.getPosition();
-        telemetry.addData("Candy Bucket Pos", candy_bucket);
 
-        pumpkin_smasher.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+        pumpkin_smasher.setPower((gamepad1.right_trigger - gamepad1.left_trigger) / 6);
         if (gamepad1.x) {
-            candy_bucket += candy_racing;
+            //candy_bucket += candy_racing;
+            candy_grabber.setPosition(0.4);
         } else if (gamepad1.y) {
-            candy_bucket -= candy_racing;
+            //candy_bucket -= candy_racing;
+            candy_grabber.setPosition(0.6);
+        } else if (!gamepad1.x && !gamepad1.y) {
+            candy_grabber.setPosition(0.5);
         }
-        candy_grabber.setPosition(candy_bucket);
         */
+
     }
 }
 
