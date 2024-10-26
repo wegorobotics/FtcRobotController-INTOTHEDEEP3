@@ -37,8 +37,8 @@ public class MecanumTeleOp extends OpMode {
         arm_servo = hardwareMap.get(Servo.class, "arm");
         //magnetic_limit = hardwareMap.get(TouchSensor.class, "magnetic_limit");
 
-        fr_Wheel.setDirection(DcMotor.Direction.FORWARD);
-        fl_Wheel.setDirection(DcMotor.Direction.REVERSE);
+        fr_Wheel.setDirection(DcMotor.Direction.REVERSE);
+        fl_Wheel.setDirection(DcMotor.Direction.FORWARD);
         br_Wheel.setDirection(DcMotor.Direction.REVERSE);
         bl_Wheel.setDirection(DcMotor.Direction.REVERSE);
 
@@ -89,7 +89,7 @@ public class MecanumTeleOp extends OpMode {
         double left_x = gamepad1.left_stick_x;
         double left_y = gamepad1.left_stick_y;
         double joystick_turn = gamepad1.right_stick_x;
-        double joystick_direction = Math.atan2(left_y, left_x) - Math.PI/2;
+        double joystick_direction = -1 * Math.atan2(left_y, left_x);
         double joystick_magnitude = Math.sqrt((left_x * left_x) + (left_y * left_y));
 
         // setting power of wheels based on joystick data
@@ -101,8 +101,8 @@ public class MecanumTeleOp extends OpMode {
         */
 
         fr_Wheel.setPower((-1 * Math.sin(joystick_direction - (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
-        fl_Wheel.setPower((1 * Math.sin(joystick_direction + (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
-        br_Wheel.setPower((-1 * Math.sin(joystick_direction + (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
+        br_Wheel.setPower((1 * Math.sin(joystick_direction + (0.25 * Math.PI)) * joystick_magnitude - joystick_turn) / 2);
+        fl_Wheel.setPower((-1 * Math.sin(joystick_direction + (0.25 * Math.PI)) * joystick_magnitude - joystick_turn) / 2);
         bl_Wheel.setPower((1 * Math.sin(joystick_direction - (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
 
         fr_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);

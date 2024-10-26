@@ -27,8 +27,8 @@ public class ParkingAutoRight extends LinearOpMode {
         climbing_slide = hardwareMap.get(DcMotor.class, "climbing_motor");
         //limelight = hardwareMap.get(Limelight3A.class, "Limelight 3A");
 
-        fr_Wheel.setDirection(DcMotor.Direction.FORWARD);
-        fl_Wheel.setDirection(DcMotor.Direction.REVERSE);
+        fr_Wheel.setDirection(DcMotor.Direction.REVERSE);
+        fl_Wheel.setDirection(DcMotor.Direction.FORWARD);
         br_Wheel.setDirection(DcMotor.Direction.REVERSE);
         bl_Wheel.setDirection(DcMotor.Direction.REVERSE);
 
@@ -49,12 +49,12 @@ public class ParkingAutoRight extends LinearOpMode {
     }
 
     public void move(double magnitude, double direction, double turn, long time) {
-        double radians = -1 * ((direction + 90) / 180) * Math.PI;
+        double radians = -1 * ((direction) / 180) * Math.PI;
 
-        fr_Wheel.setPower((Math.sin(radians + (0.25 * Math.PI)) * magnitude + turn) / 2);
-        fl_Wheel.setPower((-1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
-        br_Wheel.setPower((Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
-        bl_Wheel.setPower((-1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude + turn) / 2);
+        fr_Wheel.setPower((-1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
+        br_Wheel.setPower((1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
+        fl_Wheel.setPower((-1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
+        bl_Wheel.setPower((1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
 
         sleep(time);
 
