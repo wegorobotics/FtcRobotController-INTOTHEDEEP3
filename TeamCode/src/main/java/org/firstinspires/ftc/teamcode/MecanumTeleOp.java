@@ -24,6 +24,7 @@ public class MecanumTeleOp extends OpMode {
     //private Limelight3A limelight;
     Servo arm_servo;
     //TouchSensor magnetic_limit;
+    Servo claw_servo;
 
     @Override
     public void init() {
@@ -36,6 +37,7 @@ public class MecanumTeleOp extends OpMode {
         //limelight = hardwareMap.get(Limelight3A.class, "Limelight 3A");
         arm_servo = hardwareMap.get(Servo.class, "arm");
         //magnetic_limit = hardwareMap.get(TouchSensor.class, "magnetic_limit");
+        claw_servo = hardwareMap.get(Servo.class, "claw");
 
         fr_Wheel.setDirection(DcMotor.Direction.REVERSE);
         fl_Wheel.setDirection(DcMotor.Direction.FORWARD);
@@ -52,7 +54,14 @@ public class MecanumTeleOp extends OpMode {
         telemetry.setMsTransmissionInterval(11);
         //limelight.pipelineSwitch(0);
         //limelight.start();
+        arm_servo.setPosition(0.64);
+        claw_servo.setPosition(1);
+
+
     }
+
+    double placing_Position = 0;
+
 
     public void loop() {
         //testing a change for github
@@ -61,13 +70,18 @@ public class MecanumTeleOp extends OpMode {
         double bl_Position = bl_Wheel.getCurrentPosition();
         double fr_Position = fr_Wheel.getCurrentPosition();
         double br_Position = br_Wheel.getCurrentPosition();
+        //double placing_Position = br_Wheel.getCurrentPosition();
         double arm_Position = arm_servo.getPosition();
+        double claw_Position = claw_servo.getPosition();
 
         telemetry.addData("Front Left Wheel Pos", fl_Position);
         telemetry.addData("Back Left Wheel Pos", bl_Position);
         telemetry.addData("Front Right Wheel Pos", fr_Position);
         telemetry.addData("Back Right Wheel Pos", br_Position);
+        //telemetry.addData("Placing Slide Pos", placing_Position);
         //telemetry.addData("Magnetic Limit Boolean", magnetic_limit.isPressed());
+        telemetry.addData("Arm Pos", arm_Position);
+        telemetry.addData("Claw Pos", claw_Position);
 
         /*
         LLResult result = limelight.getLatestResult();
@@ -83,12 +97,12 @@ public class MecanumTeleOp extends OpMode {
         //pipeline 1 = basket side
         //pipeline 2 = observation side
 
-        telemetry.update();
+
 
         // wheel movement
         double left_x = gamepad1.left_stick_x;
         double left_y = gamepad1.left_stick_y;
-        double joystick_turn = gamepad1.right_stick_x;
+        double joystick_turn = gamepad1.right_stick_x / 2;
         double joystick_direction = -1 * Math.atan2(left_y, left_x);
         double joystick_magnitude = Math.sqrt((left_x * left_x) + (left_y * left_y));
 
@@ -111,17 +125,45 @@ public class MecanumTeleOp extends OpMode {
         bl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // slide movement
+        double right;
+        double left;
+        right = gamepad2.right_trigger;
+        left = gamepad2.left_trigger;
 
-        placing_slide.setPower(gamepad1.right_trigger - gamepad1.left_trigger);
+
+        /*
+        placing_Position += (right - left);
+        if (placing_Position > 100) {
+            right = 0;
+        } else if (placing_Position < -10000000) {
+            left = 0;
+        }
+        */
+
+
+        placing_slide.setPower(right - left);
+        telemetry.addData("Placing Slide Pos", placing_Position);
+
 
         // arm movement
-        final double arm_speed = 0.01;
-        if (gamepad1.x) {
+        final double arm_speed = 0.002;
+        if (gamepad2.x) {
             arm_Position += arm_speed;
-        } else if (gamepad1.y) {
+        } else if (gamepad2.y) {
             arm_Position -= arm_speed;
         }
         arm_servo.setPosition(arm_Position);
+
+        // claw movement
+        final double claw_speed = 0.003;
+        if (gamepad2.a) {
+            claw_Position += claw_speed;
+        } else if (gamepad2.b) {
+            claw_Position -= claw_speed;
+        }
+        claw_servo.setPosition(claw_Position);
+
+        telemetry.update();
     }
 }
 

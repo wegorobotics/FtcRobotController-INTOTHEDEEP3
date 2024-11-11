@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous (name= "ParkingAutoRight")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous (name= "ParkingAutoCenter")
 
-public class ParkingAutoRight extends LinearOpMode {
+public class ParkingAutoCenter extends LinearOpMode {
     // motors
     DcMotor fl_Wheel;
     DcMotor bl_Wheel;
@@ -17,6 +17,7 @@ public class ParkingAutoRight extends LinearOpMode {
     //private Limelight3A limelight;
     Servo arm_servo;
     Servo claw_servo;
+
     @Override
     public void runOpMode(){
         fl_Wheel = hardwareMap.get(DcMotor.class, "fl_motor");
@@ -49,38 +50,11 @@ public class ParkingAutoRight extends LinearOpMode {
         arm_servo.setPosition(0.64);
         claw_servo.setPosition(1);
 
-        // move(1,0,-0.02,2000);
-
-        // 0: right
-        // 90: forward
-        // -90: backward
-        // 180: left
-
-        move(1,90,0.01,3300); // direction originally 46, turn originally 0
-
-        move(1, 180, 0.012, 1700); // direction originally 0, turn originally -0.01
-        move(1, -90, 0, 3000); // direction originally 90, time originally 2500
-
-
-        move(1, 90, -0.012, 1300); // direction originally 0, time originally 900
-        move(1,0,0,900); // direction originally -90, time originally 2600
-        move(1, 90, -0.012, 1300); // remove this line if reverting code
-        /*
-        move(1, 90, 0, 2400);
-        move(1, 0, -0.012, 700);
-        move(1,-90,0,2600);
-
-         */
-
-
-
-        /*
-        move(1,90,0,500);
-        move(0,0,0,10000);
-        move(1,-90,0,500);
-         */
-
-
+        placing_slide.setPower(-0.8);
+        move(1, 90, 0, 1600);
+        placing_slide.setPower(0.6);
+        sleep(1000);
+        claw_servo.setPosition(0.9);
 
     }
 
@@ -98,7 +72,5 @@ public class ParkingAutoRight extends LinearOpMode {
         bl_Wheel.setPower(0);
         fl_Wheel.setPower(0);
         br_Wheel.setPower(0);
-
-        sleep(100);
     }
 }
