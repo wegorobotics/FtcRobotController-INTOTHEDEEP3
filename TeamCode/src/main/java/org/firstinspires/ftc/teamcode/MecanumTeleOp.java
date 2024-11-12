@@ -102,9 +102,15 @@ public class MecanumTeleOp extends OpMode {
         // wheel movement
         double left_x = gamepad1.left_stick_x;
         double left_y = gamepad1.left_stick_y;
-        double joystick_turn = gamepad1.right_stick_x / 2;
+        double joystick_turn = gamepad1.right_stick_x;
         double joystick_direction = -1 * Math.atan2(left_y, left_x);
         double joystick_magnitude = Math.sqrt((left_x * left_x) + (left_y * left_y));
+
+        double left_x2 = gamepad2.left_stick_x / 2;
+        double left_y2 = gamepad2.left_stick_y / 2;
+        double joystick_turn2 = gamepad2.right_stick_x / 2;
+        double joystick_direction2 = -1 * Math.atan2(left_y2, left_x2) / 2;
+        double joystick_magnitude2 = Math.sqrt((left_x2 * left_x2) + (left_y2 * left_y2)) / 2;
 
         // setting power of wheels based on joystick data
         /*
@@ -114,10 +120,10 @@ public class MecanumTeleOp extends OpMode {
         bl_Wheel.setPower((1 * Math.sin(joystick_direction - (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
         */
 
-        fr_Wheel.setPower((-1 * Math.sin(joystick_direction - (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
-        br_Wheel.setPower((1 * Math.sin(joystick_direction + (0.25 * Math.PI)) * joystick_magnitude - joystick_turn) / 2);
-        fl_Wheel.setPower((-1 * Math.sin(joystick_direction + (0.25 * Math.PI)) * joystick_magnitude - joystick_turn) / 2);
-        bl_Wheel.setPower((1 * Math.sin(joystick_direction - (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
+        fr_Wheel.setPower((-1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
+        br_Wheel.setPower((1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
+        fl_Wheel.setPower((-1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
+        bl_Wheel.setPower((1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
 
         fr_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -127,8 +133,13 @@ public class MecanumTeleOp extends OpMode {
         // slide movement
         double right;
         double left;
-        right = gamepad2.right_trigger;
-        left = gamepad2.left_trigger;
+        double right2;
+        double left2;
+
+        right = gamepad1.right_trigger;
+        left = gamepad1.left_trigger;
+        right2 = gamepad2.right_trigger;
+        left2 = gamepad2.left_trigger;
 
 
         /*
@@ -141,24 +152,24 @@ public class MecanumTeleOp extends OpMode {
         */
 
 
-        placing_slide.setPower(right - left);
+        placing_slide.setPower(right + right2 - left - left2);
         telemetry.addData("Placing Slide Pos", placing_Position);
 
 
         // arm movement
         final double arm_speed = 0.002;
-        if (gamepad2.x) {
+        if (gamepad2.dpad_down) {
             arm_Position += arm_speed;
-        } else if (gamepad2.y) {
+        } else if (gamepad2.dpad_up) {
             arm_Position -= arm_speed;
         }
         arm_servo.setPosition(arm_Position);
 
         // claw movement
         final double claw_speed = 0.003;
-        if (gamepad2.a) {
+        if (gamepad2.x) {
             claw_Position += claw_speed;
-        } else if (gamepad2.b) {
+        } else if (gamepad2.a) {
             claw_Position -= claw_speed;
         }
         claw_servo.setPosition(claw_Position);
