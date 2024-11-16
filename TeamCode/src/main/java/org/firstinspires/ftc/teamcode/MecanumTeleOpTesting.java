@@ -58,9 +58,13 @@ public class MecanumTeleOpTesting extends OpMode {
 
     }
 
+    //no mans' land
     double placing_Position = 0;
     double previous_position = 0;
     double previous_time = 0;
+    double integral_sum = 0;
+    double previous_error = 0;
+    double derivative = 0;
 
 
     public void loop() {
@@ -120,7 +124,7 @@ public class MecanumTeleOpTesting extends OpMode {
         //placing_slide.setPower(right + right2 - left - left2);
         //telemetry.addData("Placing Slide Pos", placing_Position);
 
-        //linear slide P in PID?
+        //PID?
         double commanded_speed = right + right2 - left - left2;
         if (commanded_speed > 1) {
             commanded_speed = 1;
@@ -131,17 +135,30 @@ public class MecanumTeleOpTesting extends OpMode {
         double current_position = placing_Position;
         double current_time = runtime.seconds();
 
+        //actual velocity
         double change_in_position = current_position - previous_position;
         double change_in_time = current_time - previous_time;
-
         double actual_speed = change_in_position / change_in_time;
-        double speed_error = commanded_speed - actual_speed;
+
+        //P
+        double current_error = commanded_speed - actual_speed;
         double error_constant = 0.3;
 
-        placing_slide.setPower(error_constant * speed_error);
+        //I
+        integral_sum += (current_error * change_in_time);
+        double integral_constant = 0.1;
+
+        //D
+        derivative = (current_error - previous_error) / change_in_time;
+        double derivative_constant = 0.1;
+
+        //setting power
+        double final_power = (error_constant * current_error) + (integral_constant * integral_sum) + (derivative_constant * derivative);
+        placing_slide.setPower(final_power);
 
         previous_position = current_position;
         previous_time = current_time;
+        previous_error = current_error;
 
 
         // arm movement
