@@ -1,7 +1,7 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous (name= "ParkingAutoLeft")
@@ -47,46 +47,35 @@ public class ParkingAutoLeft extends LinearOpMode {
         //limelight.start();
 
         waitForStart();
-        arm_servo.setPosition(0.64);
-        claw_servo.setPosition(1);
+        arm_servo.setPosition(0.11);
+        claw_servo.setPosition(0.6);
 
-
-        placing_slide.setPower(-0.8);
-        move(1, 60, 0, 1650);
-        placing_slide.setPower(0.6);
-        sleep(1200);
+        //placing_slide.setPower(-0.8);
+        //climbing_slide.setPower(0.8);
+        move(1, 65, 0.05, 2500);
+        move(1, 270, 0, 100);
+        placing_slide.setPower(-0.6);
+        climbing_slide.setPower(0.6);
+        sleep(1400);
         placing_slide.setPower(0);
-        claw_servo.setPosition(0.9);
+        climbing_slide.setPower(-0);
+        claw_servo.setPosition(0.29);
+        arm_servo.setPosition(0.2);
+        move(1, 270, 0, 450);
+        placing_slide.setPower(0.4);
+        climbing_slide.setPower(-0.4);
 
-
-        move(1, 180, 0.05, 2700);
-        move(1, 90, 0, 1400);
-        move(1, 180, 0.07, 1200);
-        move(1, 270, 0.07, 2200);
-        move(1, 90, -0.07, 2200);
-
-
-
-        //OLD CODE
-        /*
-        placing_slide.setPower(-0.35);
-        move(1, 85, 0, 2550);
-        move(0,0,1,650);
-        move(1,90,0,800);
-        placing_slide.setPower(0.35);
-        sleep(800);
-        placing_slide.setPower(0);
-        */
-
+        claw_servo.setPosition(0.42);
+        sleep(400);
     }
 
     public void move(double magnitude, double direction, double turn, long time) {
         double radians = 1 * ((direction) / 180) * Math.PI;
 
-        fr_Wheel.setPower((-1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
-        br_Wheel.setPower((1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
-        fl_Wheel.setPower((-1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
-        bl_Wheel.setPower((1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
+        fr_Wheel.setPower(1.004 * (-1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
+        br_Wheel.setPower(1.000 * (1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
+        fl_Wheel.setPower(1.227 * (-1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
+        bl_Wheel.setPower(1.088 *  (1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
 
         sleep(time);
 

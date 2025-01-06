@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp (name= "MecanumTeleOpTesting")
+@TeleOp (name= "MecanumTeleOpTesting2")
 //@Disabled
-public class MecanumTeleOpTesting extends OpMode {
+public class MecanumTeleOpTesting2 extends OpMode {
     // motors
     DcMotor fl_Wheel;
     DcMotor bl_Wheel;
@@ -86,6 +86,8 @@ public class MecanumTeleOpTesting extends OpMode {
     double integral_sum2 = 0;
     double previous_error2 = 0;
     double derivative2 = 0;
+    double commanded_position = 0;
+    double commanded_position2 = 0;
 
 
     public void loop() {
@@ -155,6 +157,8 @@ public class MecanumTeleOpTesting extends OpMode {
             commanded_speed = -1;
         }
 
+        commanded_position += right + right2 - left - left2;
+
         double current_position = placing_Position;
         double current_time = runtime.seconds();
 
@@ -163,12 +167,13 @@ public class MecanumTeleOpTesting extends OpMode {
         double change_in_time = current_time - previous_time;
         double actual_speed = (change_in_position / change_in_time) / 1950;
 
-        double error_constant = 1;
+        double error_constant = 0.06;
         double integral_constant = 0;
         double derivative_constant = 0;
 
         //P
-        double current_error = commanded_speed - actual_speed;
+        //double current_error = commanded_speed - actual_speed;
+        double current_error = commanded_position - current_position;
 
         //I
         integral_sum += (current_error * change_in_time);
@@ -196,7 +201,8 @@ public class MecanumTeleOpTesting extends OpMode {
         double actual_speed2 = (change_in_position2 / change_in_time2) / 1950;
 
         //P
-        double current_error2 = (-1 * commanded_speed) - actual_speed2;
+        //double current_error2 = (-1 * commanded_speed) - actual_speed2;
+        double current_error2 = (-1 * commanded_position) - current_position2;
 
         //I
         integral_sum2 += (current_error2 * change_in_time2);
@@ -206,8 +212,9 @@ public class MecanumTeleOpTesting extends OpMode {
 
         //setting power
         double final_power2 = (error_constant * current_error2) + (integral_constant * integral_sum2) - (derivative_constant * derivative2);
-        double power_constant = -1.08;
-        left_slide.setPower(final_power * power_constant);
+        //double power_constant = -1.1;
+        //left_slide.setPower(final_power * power_constant);
+        left_slide.setPower(final_power2);
 
         previous_position2 = current_position2;
         previous_time2 = current_time2;

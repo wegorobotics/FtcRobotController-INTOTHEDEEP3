@@ -54,8 +54,9 @@ public class MecanumTeleOp extends OpMode {
         telemetry.setMsTransmissionInterval(11);
         //limelight.pipelineSwitch(0);
         //limelight.start();
-        arm_servo.setPosition(0.64);
-        claw_servo.setPosition(1);
+
+        //arm_servo.setPosition(0.16);
+        //claw_servo.setPosition(0.66);
 
 
     }
@@ -120,10 +121,10 @@ public class MecanumTeleOp extends OpMode {
         bl_Wheel.setPower((1 * Math.sin(joystick_direction - (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
         */
 
-        fr_Wheel.setPower((-1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
-        br_Wheel.setPower((1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
-        fl_Wheel.setPower((-1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
-        bl_Wheel.setPower((1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
+        fr_Wheel.setPower(1.004 * (-1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
+        br_Wheel.setPower(1.000 * (1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
+        fl_Wheel.setPower(1.227 * (-1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
+        bl_Wheel.setPower(1.088 * (1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
 
         fr_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -153,6 +154,7 @@ public class MecanumTeleOp extends OpMode {
 
 
         placing_slide.setPower(right + right2 - left - left2);
+        climbing_slide.setPower(-1 * (right + right2 - left - left2));
         telemetry.addData("Placing Slide Pos", placing_Position);
 
 
@@ -167,11 +169,18 @@ public class MecanumTeleOp extends OpMode {
 
         // claw movement
         final double claw_speed = 0.003;
-        if (gamepad2.x) {
-            claw_Position += claw_speed;
-        } else if (gamepad2.a) {
-            claw_Position -= claw_speed;
+        if ((gamepad2.x || gamepad2.a) && (claw_Position <= 0.6) && (claw_Position >= 0.16)) {
+            if (gamepad2.x) {
+                claw_Position += claw_speed;
+            } else if (gamepad2.a) {
+                claw_Position -= claw_speed;
+            }
+        } else if ((gamepad2.x || gamepad2.a) && claw_Position > 0.6) {
+            claw_Position = 0.6;
+        } else if ((gamepad2.x || gamepad2.a) && claw_Position < 0.16) {
+            claw_Position = 0.16;
         }
+
         claw_servo.setPosition(claw_Position);
 
         telemetry.update();

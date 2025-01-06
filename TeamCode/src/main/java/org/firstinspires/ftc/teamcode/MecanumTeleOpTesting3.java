@@ -7,9 +7,9 @@ import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 
-@TeleOp (name= "MecanumTeleOpTesting")
+@TeleOp (name= "MecanumTeleOpTesting3")
 //@Disabled
-public class MecanumTeleOpTesting extends OpMode {
+public class MecanumTeleOpTesting3 extends OpMode {
     // motors
     DcMotor fl_Wheel;
     DcMotor bl_Wheel;
@@ -206,8 +206,9 @@ public class MecanumTeleOpTesting extends OpMode {
 
         //setting power
         double final_power2 = (error_constant * current_error2) + (integral_constant * integral_sum2) - (derivative_constant * derivative2);
-        double power_constant = -1.08;
-        left_slide.setPower(final_power * power_constant);
+        //double power_constant = -1.1;
+        //left_slide.setPower(final_power * power_constant);
+        left_slide.setPower(final_power2);
 
         previous_position2 = current_position2;
         previous_time2 = current_time2;
