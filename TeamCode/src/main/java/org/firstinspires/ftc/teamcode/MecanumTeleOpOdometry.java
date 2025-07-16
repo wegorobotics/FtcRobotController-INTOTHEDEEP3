@@ -98,7 +98,6 @@ public class MecanumTeleOpOdometry extends LinearOpMode {
 
             odo.update();
 
-            /*
             if (gamepad1.a) {
                 odo.resetPosAndIMU();
             }
@@ -107,7 +106,7 @@ public class MecanumTeleOpOdometry extends LinearOpMode {
                 odo.recalibrateIMU();
             }
 
-             */
+
 
             double newTime = getRuntime();
             double loopTime = newTime - oldTime;
