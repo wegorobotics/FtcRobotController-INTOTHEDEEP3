@@ -47,23 +47,32 @@ public class ParkingAutoLeft extends LinearOpMode {
         //limelight.start();
 
         waitForStart();
-        arm_servo.setPosition(0.11);
+        arm_servo.setPosition(0.17);
         claw_servo.setPosition(0.6);
 
         //placing_slide.setPower(-0.8);
         //climbing_slide.setPower(0.8);
-        move(1, 65, 0.05, 2500);
+        move(1, 90, 0, 2500);
         move(1, 270, 0, 100);
         placing_slide.setPower(-0.6);
         climbing_slide.setPower(0.6);
-        sleep(1400);
+        sleep(1500);
         placing_slide.setPower(0);
         climbing_slide.setPower(-0);
-        claw_servo.setPosition(0.29);
-        arm_servo.setPosition(0.2);
-        move(1, 270, 0, 450);
+        claw_servo.setPosition(0.42);
+        arm_servo.setPosition(0.25);
+        move(1, 270, 0, 800);
         placing_slide.setPower(0.4);
         climbing_slide.setPower(-0.4);
+        move(1, 202, 0.08, 4100);
+        move(1,90,0,3000);
+        placing_slide.setPower(-0.9);
+        climbing_slide.setPower(0.9);
+        move(1,0,1,500);
+        placing_slide.setPower(0);
+        climbing_slide.setPower(-0);
+        move(0.8,90,0,1400);
+
 
         claw_servo.setPosition(0.42);
         sleep(400);
@@ -72,10 +81,10 @@ public class ParkingAutoLeft extends LinearOpMode {
     public void move(double magnitude, double direction, double turn, long time) {
         double radians = 1 * ((direction) / 180) * Math.PI;
 
-        fr_Wheel.setPower(1.004 * (-1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
+        fr_Wheel.setPower(1.024 * (-1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
         br_Wheel.setPower(1.000 * (1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
-        fl_Wheel.setPower(1.227 * (-1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
-        bl_Wheel.setPower(1.088 *  (1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
+        fl_Wheel.setPower(1.094 * (-1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
+        bl_Wheel.setPower(0.989 *  (1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
 
         sleep(time);
 

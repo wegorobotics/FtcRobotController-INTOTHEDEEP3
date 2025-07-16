@@ -10,6 +10,7 @@ import com.qualcomm.hardware.limelightvision.LLResult;
 import com.qualcomm.robotcore.hardware.TouchSensor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 @TeleOp (name= "MecanumTeleOp")
 //@Disabled
@@ -25,6 +26,10 @@ public class MecanumTeleOp extends OpMode {
     Servo arm_servo;
     //TouchSensor magnetic_limit;
     Servo claw_servo;
+
+    private ElapsedTime runtime = new ElapsedTime();
+    boolean runagain = true;
+    boolean runagainagain = false;
 
     @Override
     public void init() {
@@ -62,9 +67,16 @@ public class MecanumTeleOp extends OpMode {
     }
 
     double placing_Position = 0;
-
+    boolean initialize = true;
 
     public void loop() {
+
+        if (initialize) {
+            arm_servo.setPosition(0);
+            claw_servo.setPosition(0.5);
+            initialize = false;
+        }
+
         //testing a change for github
         // encoders
         double fl_Position = fl_Wheel.getCurrentPosition();
@@ -104,6 +116,14 @@ public class MecanumTeleOp extends OpMode {
         double left_x = gamepad1.left_stick_x;
         double left_y = gamepad1.left_stick_y;
         double joystick_turn = gamepad1.right_stick_x;
+        if (gamepad1.left_stick_button) {
+            left_x = (gamepad1.left_stick_x / 2);
+            left_y = (gamepad1.left_stick_y / 2);
+        }
+        if (gamepad1.right_stick_button) {
+            joystick_turn = (gamepad1.right_stick_x / 2);
+        }
+
         double joystick_direction = -1 * Math.atan2(left_y, left_x);
         double joystick_magnitude = Math.sqrt((left_x * left_x) + (left_y * left_y));
 
@@ -121,10 +141,10 @@ public class MecanumTeleOp extends OpMode {
         bl_Wheel.setPower((1 * Math.sin(joystick_direction - (0.25 * Math.PI)) * joystick_magnitude + joystick_turn) / 2);
         */
 
-        fr_Wheel.setPower(1.004 * (-1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
+        fr_Wheel.setPower(1.024 * (-1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
         br_Wheel.setPower(1.000 * (1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
-        fl_Wheel.setPower(1.227 * (-1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
-        bl_Wheel.setPower(1.088 * (1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
+        fl_Wheel.setPower(1.094 * (-1 * Math.sin((joystick_direction + joystick_direction2) + (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) - (joystick_turn + joystick_turn2)) / 2);
+        bl_Wheel.setPower(0.989 * (1 * Math.sin((joystick_direction + joystick_direction2) - (0.25 * Math.PI)) * (joystick_magnitude + joystick_magnitude2) + (joystick_turn + joystick_turn2)) / 2);
 
         fr_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         fl_Wheel.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
@@ -165,7 +185,7 @@ public class MecanumTeleOp extends OpMode {
         } else if (gamepad2.dpad_up) {
             arm_Position -= arm_speed;
         }
-        arm_servo.setPosition(arm_Position);
+
 
         // claw movement
         final double claw_speed = 0.003;
@@ -181,6 +201,35 @@ public class MecanumTeleOp extends OpMode {
             claw_Position = 0.16;
         }
 
+
+
+
+/*
+        if (gamepad1.a && runagain) {
+            runagain = false;
+            arm_Position = 0.57;
+            claw_Position = 0.38;
+            placing_slide.setPower(-0.6);
+            climbing_slide.setPower(0.6);
+            runtime.reset();
+        }
+        if (runtime.seconds() > 5 && !runagain) {
+            runtime.reset();
+            runagainagain = true;
+            claw_Position = 0.54;
+            placing_slide.setPower(0);
+            climbing_slide.setPower(0);
+        }
+        if (runtime.seconds() > 0.5 && runagainagain) {
+            runagainagain = false;
+            runagain = true;
+            runtime.reset();
+            arm_Position = 0.16;
+        }
+
+*/
+
+        arm_servo.setPosition(arm_Position);
         claw_servo.setPosition(claw_Position);
 
         telemetry.update();

@@ -1,12 +1,12 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous (name= "ParkingAutoRight")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous (name= "ParkingAutoTesting")
 
-public class ParkingAutoRight extends LinearOpMode {
+public class ParkingAutoTesting extends LinearOpMode {
     // motors
     DcMotor fl_Wheel;
     DcMotor bl_Wheel;
@@ -42,39 +42,38 @@ public class ParkingAutoRight extends LinearOpMode {
         placing_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
         climbing_slide.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
+        fr_Wheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        fl_Wheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        br_Wheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        bl_Wheel.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        fr_Wheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        fl_Wheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        br_Wheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        bl_Wheel.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
         telemetry.setMsTransmissionInterval(11);
         //limelight.pipelineSwitch(0);
         //limelight.start();
 
         waitForStart();
-        arm_servo.setPosition(0.17);
+        arm_servo.setPosition(0.11);
         claw_servo.setPosition(0.6);
+
 
         //placing_slide.setPower(-0.8);
         //climbing_slide.setPower(0.8);
-        move(1, 90, 0, 2500);
-        move(1, 270, 0, 100);
-        placing_slide.setPower(-0.6);
-        climbing_slide.setPower(0.6);
-        sleep(1500);
-        placing_slide.setPower(0);
-        climbing_slide.setPower(-0);
-        claw_servo.setPosition(0.42);
-        arm_servo.setPosition(0.25);
-        move(1, 270, 0, 800);
-        placing_slide.setPower(0.4);
-        climbing_slide.setPower(-0.4);
-        move(1, -15, -0.08, 3300);
-        move(1,90,0,3000);
-        sleep(500);
-        move(1,0,-0.1,1100);
-        move(1,-90,0,2900);
-        move(1,90,0,1000);
-        sleep(10000);
-        move(1,-90,0,1500);
-
-        claw_servo.setPosition(0.42);
-        sleep(400);
+        move(1, 90, 0, 4000);
+        double fl_Position = fl_Wheel.getCurrentPosition();
+        double bl_Position = bl_Wheel.getCurrentPosition();
+        double fr_Position = fr_Wheel.getCurrentPosition();
+        double br_Position = br_Wheel.getCurrentPosition();
+        telemetry.addData("Front Left Wheel Pos", fl_Position);
+        telemetry.addData("Back Left Wheel Pos", bl_Position);
+        telemetry.addData("Front Right Wheel Pos", fr_Position);
+        telemetry.addData("Back Right Wheel Pos", br_Position);
+        telemetry.update();
+        sleep(100000);
 
     }
 
@@ -84,7 +83,7 @@ public class ParkingAutoRight extends LinearOpMode {
         fr_Wheel.setPower(1.024 * (-1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
         br_Wheel.setPower(1.000 * (1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
         fl_Wheel.setPower(1.094 * (-1 * Math.sin(radians + (0.25 * Math.PI)) * magnitude - turn) / 2);
-        bl_Wheel.setPower(0.989 * (1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
+        bl_Wheel.setPower(0.989 *  (1 * Math.sin(radians - (0.25 * Math.PI)) * magnitude + turn) / 2);
 
         sleep(time);
 

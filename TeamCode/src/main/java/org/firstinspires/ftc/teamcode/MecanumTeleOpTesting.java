@@ -67,8 +67,8 @@ public class MecanumTeleOpTesting extends OpMode {
         telemetry.setMsTransmissionInterval(11);
         //limelight.pipelineSwitch(0);
         //limelight.start();
-        arm_servo.setPosition(0.16);
-        claw_servo.setPosition(0.66);
+        //arm_servo.setPosition(0.16);
+        //claw_servo.setPosition(0.66);
 
 
     }
@@ -146,7 +146,7 @@ public class MecanumTeleOpTesting extends OpMode {
         //placing_slide.setPower(right + right2 - left - left2);
         //telemetry.addData("Placing Slide Pos", placing_Position);
 
-
+        /*
         //PID?
         double commanded_speed = right + right2 - left - left2;
         if (commanded_speed > 1) {
@@ -223,15 +223,17 @@ public class MecanumTeleOpTesting extends OpMode {
         telemetry.addData("actual speed2", actual_speed2);
         telemetry.addData("right slide position", right_slide.getCurrentPosition());
         telemetry.addData("left slide position", left_slide.getCurrentPosition());
-
+        */
+        /*
         // arm movement
-        final double arm_speed = 0.002;
+        final double arm_speed = 0.02;
         if (gamepad2.dpad_down) {
             arm_Position += arm_speed;
         } else if (gamepad2.dpad_up) {
             arm_Position -= arm_speed;
         }
         arm_servo.setPosition(arm_Position);
+
 
         // claw movement
         final double claw_speed = 0.003;
@@ -241,6 +243,24 @@ public class MecanumTeleOpTesting extends OpMode {
             claw_Position -= claw_speed;
         }
         claw_servo.setPosition(claw_Position);
+        */
+
+
+        double claw_speed = 0.5;
+        if (gamepad2.x) {
+            claw_speed = 0.6;
+        } else if (gamepad2.a) {
+            claw_speed = 0.4;
+        }
+        claw_servo.setPosition(claw_speed);
+
+        double arm_speed = 0.5;
+        if (gamepad2.dpad_down) {
+            arm_speed = 0.8;
+        } else if (gamepad2.dpad_up) {
+            arm_speed = 0.2;
+        }
+        arm_servo.setPosition(arm_speed);
 
         telemetry.update();
     }
